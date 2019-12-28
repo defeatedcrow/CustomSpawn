@@ -7,18 +7,18 @@ Please visit my new Wiki: http://defeatedcrow.jp/modwiki/Mainpage
 ## Introduction
 - This is a mod for Minecraft(JE).<br>
 
-###このmodはモブのスポーンを以下の条件で制限します:<br>
+### このmodはモブのスポーンを以下の条件で制限します:<br>
 - 高度
 - 足元のブロック
 - バイオーム（モブごとにスポーン制限バイオームを設定できます。）
-- 村の近くであること
+- 村の近くであること<br>
 制限条件はコンフィグで調整できます。<br>
 
-###This mod limits mobs to spawn under the following conditions:<br>
+### This mod limits mobs to spawn under the following conditions:<br>
 - Altitude
 - Foot block
 - Biome (You can set a spawn limit biome for each mob.)
-- Being near the village
+- Being near the village<br>
 Restrictions can be adjusted in the config.<br>
 
 このmodはサーバーサイドのみの導入で機能します。<br>
