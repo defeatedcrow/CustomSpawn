@@ -1,5 +1,5 @@
 ﻿# CustomSpawn
-The Mod for Minecraft 1.12.1+
+The Mod for Minecraft 1.12.X/1.15.2
 
 ## Project Site
 Please visit my new Wiki: http://defeatedcrow.jp/modwiki/Mainpage
@@ -25,8 +25,8 @@ Restrictions can be adjusted in the config.<br>
 This mod only requires server-side install.<br>
 
 ## Current operating environment:
-- Minecraft 1.12.1 
-- MinecraftForge 14.22.1.2478+
+- Minecraft 1.12.1/1.15.2
+- MinecraftForge 14.22.1.2478+/31.1.0+
 - Perhaps this may work with a different version. (I can not guarantee that, sorry.)
    
 ## Licenses

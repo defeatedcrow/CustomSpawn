@@ -1,0 +1,28 @@
+
+modLoader="javafml"
+loaderVersion="[31,)"
+issueTrackerURL="https://github.com/defeatedcrow/CustomSpawn/issue"
+
+[[mods]]
+modId="dcs_spawn"
+version="B3.0.0"
+displayName="DCsCustomSpawnMod"
+displayURL="https://defeatedcrow.jp/modwiki/CustomSpawn/"
+logoFile="harvest_with_dispenser_200.png"
+credits="defeatedcrow"
+authors="defeatedcrow"
+description=""
+
+[[dependencies.dcs_spawn]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="NONE"
+    side="SERVER"
+
+[[dependencies.dcs_spawn]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="SERVER"

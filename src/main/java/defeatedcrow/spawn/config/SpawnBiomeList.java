@@ -1,4 +1,4 @@
-package defeatedcrow.spawn;
+package defeatedcrow.spawn.config;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,16 +20,17 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.init.Biomes;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class SpawnBiomeList {
 
 	private static final Logger LOGGER = LogManager.getLogger("dcs_spawn");
-	public static final Map<Class<? extends Entity>, List<BiomeType>> biomeList = new HashMap<Class<? extends Entity>, List<BiomeType>>();
+	public static final Map<EntityType<?>, List<BiomeType>> biomeList = new HashMap<EntityType<?>, List<BiomeType>>();
 
 	public static final SpawnBiomeList INSTANCE = new SpawnBiomeList();
 
@@ -63,24 +64,27 @@ public class SpawnBiomeList {
 		if (!regMap.isEmpty()) {
 			for (Entry<String, List<String>> ent : regMap.entrySet()) {
 				if (ent != null) {
-					String name = ent.getKey();
-					List<String> value = ent.getValue();
-					ResourceLocation res = new ResourceLocation(name);
-					if (value != null && !value.isEmpty() && EntityList.getClass(res) != null) {
-						Class<? extends Entity> entity = EntityList.getClass(res);
-						List<BiomeType> data = Lists.newArrayList();
-						String l = "";
-						for (String s : value) {
-							BiomeType b = getType(s);
-							if (b != null) {
-								data.add(b);
-								l += b.toString() + ", ";
+					try {
+						String name = ent.getKey();
+						List<String> value = ent.getValue();
+						EntityType<?> entity = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
+						if (value != null && !value.isEmpty() && entity != null) {
+							List<BiomeType> data = Lists.newArrayList();
+							String l = "";
+							for (String s : value) {
+								BiomeType b = getType(s);
+								if (b != null) {
+									data.add(b);
+									l += b.toString() + ", ";
+								}
+							}
+							if (entity != null && !data.isEmpty()) {
+								biomeList.put(entity, data);
+								LOGGER.info("Add spawn blacklist: " + name + ": " + l);
 							}
 						}
-						if (entity != null && !data.isEmpty()) {
-							biomeList.put(entity, data);
-							LOGGER.info("Add spawn blacklist: " + name + ": " + l);
-						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}
@@ -148,7 +152,7 @@ public class SpawnBiomeList {
 	}
 
 	public void setDir(File file) {
-		dir = new File(file, "defeatedcrow/customspawn/spawn_biome.json");
+		dir = new File(file, "customspawn_biomelist.json");
 		if (dir.getParentFile() != null) {
 			dir.getParentFile().mkdirs();
 		}
@@ -158,7 +162,7 @@ public class SpawnBiomeList {
 		if (name.equalsIgnoreCase("ALL")) {
 			return new AllBiome();
 		}
-		Biome b = Biome.REGISTRY.getObject(new ResourceLocation(name));
+		Biome b = ForgeRegistries.BIOMES.getValue(new ResourceLocation(name));
 		BiomeDictionary.Type t = BiomeDictionary.Type.getType(name);
 		if (b != null || t != null) {
 			return new BiomeType(b, t);
@@ -170,8 +174,8 @@ public class SpawnBiomeList {
 	public boolean canSpawn(Entity entity, Biome biome) {
 		if (entity == null || biome == null)
 			return true;
-		for (Entry<Class<? extends Entity>, List<BiomeType>> ent : biomeList.entrySet()) {
-			if (ent.getKey().isInstance(entity)) {
+		for (Entry<EntityType<?>, List<BiomeType>> ent : biomeList.entrySet()) {
+			if (entity.getType() == ent.getKey()) {
 				for (BiomeType t : ent.getValue()) {
 					if (t.match(biome)) {
 						return false;
@@ -204,7 +208,7 @@ public class SpawnBiomeList {
 		@Override
 		public String toString() {
 			if (biome != null)
-				return biome.getBiomeName();
+				return biome.getRegistryName().toString();
 			if (type != null)
 				return type.getName();
 			return "empty";
@@ -215,7 +219,7 @@ public class SpawnBiomeList {
 	public class AllBiome extends BiomeType {
 
 		public AllBiome() {
-			super(Biomes.VOID, null);
+			super(Biomes.PLAINS, null);
 		}
 
 		@Override
