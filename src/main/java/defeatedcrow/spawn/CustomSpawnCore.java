@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableList;
 
 import defeatedcrow.spawn.config.DCSpawnConfig;
+import defeatedcrow.spawn.config.ModConfigDC;
 import defeatedcrow.spawn.config.SpawnBiomeList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -35,7 +36,8 @@ public final class CustomSpawnCore {
 
 		File config = FMLPaths.CONFIGDIR.get().toFile();
 		SpawnBiomeList.INSTANCE.setDir(config);
-		ModLoadingContext.get().registerConfig(Type.SERVER, DCSpawnConfig.INSTANCE.SPEC, "customspawn_core.toml");
+		ModLoadingContext.get().getActiveContainer().addConfig(new ModConfigDC(Type.SERVER, DCSpawnConfig.INSTANCE.SPEC,
+				"customspawn_core.toml"));
 
 	}
 
@@ -46,9 +48,10 @@ public final class CustomSpawnCore {
 
 		SpawnBiomeList.INSTANCE.pre();
 		if (SpawnBiomeList.INSTANCE.biomeList.isEmpty()) {
+			SpawnBiomeList.INSTANCE.addMobBlackList("bat", ImmutableList.of("ocean", "river"));
 			List<String> ret = ImmutableList.of("Biome name (ex. forest)", "or BiomeDictionaryType (ex. hot, dence)",
 					"ALL specifies all biomes.");
-			SpawnBiomeList.INSTANCE.addMobBlackList("RegistryName of Mobs. (ex. zombie, modID:modMobName)", ret);
+			SpawnBiomeList.INSTANCE.addMobBlackList("RegistryName of Mobs. (ex. zombie, modid:samplename)", ret);
 		}
 		SpawnBiomeList.INSTANCE.post();
 	}

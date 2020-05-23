@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -63,28 +64,24 @@ public class SpawnBiomeList {
 
 		if (!regMap.isEmpty()) {
 			for (Entry<String, List<String>> ent : regMap.entrySet()) {
-				if (ent != null) {
-					try {
-						String name = ent.getKey();
-						List<String> value = ent.getValue();
-						EntityType<?> entity = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
-						if (value != null && !value.isEmpty() && entity != null) {
-							List<BiomeType> data = Lists.newArrayList();
-							String l = "";
-							for (String s : value) {
-								BiomeType b = getType(s);
-								if (b != null) {
-									data.add(b);
-									l += b.toString() + ", ";
-								}
-							}
-							if (entity != null && !data.isEmpty()) {
-								biomeList.put(entity, data);
-								LOGGER.info("Add spawn blacklist: " + name + ": " + l);
+				if (ent != null && DCSpawnConfig.isValidKey(ent.getKey())) {
+					String name = ent.getKey().toLowerCase(Locale.ROOT);
+					List<String> value = ent.getValue();
+					EntityType<?> entity = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
+					if (value != null && !value.isEmpty() && entity != null) {
+						List<BiomeType> data = Lists.newArrayList();
+						String l = "";
+						for (String s : value) {
+							BiomeType b = getType(s);
+							if (b != null) {
+								data.add(b);
+								l += b.toString() + ", ";
 							}
 						}
-					} catch (Exception e) {
-						e.printStackTrace();
+						if (entity != null && !data.isEmpty()) {
+							biomeList.put(entity, data);
+							LOGGER.info("Add spawn blacklist: " + name + ": " + l);
+						}
 					}
 				}
 			}

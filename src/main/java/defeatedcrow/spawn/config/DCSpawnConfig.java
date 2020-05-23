@@ -1,6 +1,7 @@
 package defeatedcrow.spawn.config;
 
 import java.util.List;
+import java.util.Locale;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -11,7 +12,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class DCSpawnConfig {
@@ -72,7 +72,8 @@ public class DCSpawnConfig {
 		List<Block> list = Lists.newArrayList();
 		if (updateblacklist != null && updateblacklist.size() > 0) {
 			for (String name : updateblacklist) {
-				if (name != null) {
+				if (isValidKey(name)) {
+					name = name.toLowerCase();
 					String itemName = name;
 					String modid = "minecraft";
 					if (name.contains(":")) {
@@ -81,23 +82,25 @@ public class DCSpawnConfig {
 							if (n2.length == 1) {
 								itemName = n2[0];
 							} else if (n2.length > 1) {
-								modid = n2[0];
+								modid = n2[0].toLowerCase(Locale.ROOT);
 								itemName = n2[1];
 							}
 						}
 					}
 
-					if (modid != null && ModList.get().isLoaded(modid)) {
-						CustomSpawnCore.LOGGER.debug("SpawnBlacklist add target: " + modid + ":" + itemName);
-						Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(modid, itemName));
-						if (block != null && block != Blocks.AIR) {
-							list.add(block);
-						}
+					CustomSpawnCore.LOGGER.debug("SpawnBlacklist add target: " + modid + ":" + itemName);
+					Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(modid, itemName));
+					if (block != null && block != Blocks.AIR) {
+						list.add(block);
 					}
 				}
 			}
 		}
 		return list;
+	}
+
+	public static boolean isValidKey(String key) {
+		return key != null && !key.contains(" ") && !key.contains(",") && !key.contains("(") && !key.contains(")");
 	}
 
 }
