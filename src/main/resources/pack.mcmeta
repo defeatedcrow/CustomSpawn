@@ -1,6 +1,8 @@
 {
     "pack": {
-        "description": "Resources of dcs_spawn",
-        "pack_format": 5
+        "description": "resources of CustomSpawnMod",
+        "pack_format": 9,
+        "forge:resource_pack_format": 9,
+        "forge:data_pack_format": 10
     }
 }

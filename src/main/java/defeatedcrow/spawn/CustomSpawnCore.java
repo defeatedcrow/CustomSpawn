@@ -1,58 +1,42 @@
 package defeatedcrow.spawn;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.util.List;
+import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.ImmutableList;
-
-import defeatedcrow.spawn.config.DCSpawnConfig;
-import defeatedcrow.spawn.config.ModConfigDC;
-import defeatedcrow.spawn.config.SpawnBiomeList;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 
-@Mod("dcs_spawn")
-public final class CustomSpawnCore {
-
-	public static final Logger LOGGER = LogManager.getLogger();
-
-	public static CustomSpawnCore INSTANCE;
-	public static final Path CONFIG_DIR = null;
+@Mod(CustomSpawnCore.MOD_ID)
+public class CustomSpawnCore {
+	public static final String MOD_ID = "dcs_custom_spawn";
+	public static File configDir = null;
+	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
 	public CustomSpawnCore() {
-		INSTANCE = this;
-
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupCommon);
-		MinecraftForge.EVENT_BUS.register(this);
-
-		File config = FMLPaths.CONFIGDIR.get().toFile();
-		SpawnBiomeList.INSTANCE.setDir(config);
-		ModLoadingContext.get().getActiveContainer().addConfig(new ModConfigDC(Type.SERVER, DCSpawnConfig.INSTANCE.SPEC,
-				"customspawn_core.toml"));
-
-	}
-
-	public void setupCommon(final FMLCommonSetupEvent event) {
-		DCSpawnConfig.INSTANCE.leadBlockNames();
-		MinecraftForge.EVENT_BUS.register(new SpawnCustomEvent());
-		MinecraftForge.EVENT_BUS.register(new LivingInVillageEvent());
-
-		SpawnBiomeList.INSTANCE.pre();
-		if (SpawnBiomeList.INSTANCE.biomeList.isEmpty()) {
-			SpawnBiomeList.INSTANCE.addMobBlackList("bat", ImmutableList.of("ocean", "river"));
-			List<String> ret = ImmutableList.of("Biome name (ex. forest)", "or BiomeDictionaryType (ex. hot, dence)",
-					"ALL specifies all biomes.");
-			SpawnBiomeList.INSTANCE.addMobBlackList("RegistryName of Mobs. (ex. zombie, modid:samplename)", ret);
+		configDir = new File(FMLPaths.CONFIGDIR.get().toFile() + "/custom_spawn");
+		if (!configDir.exists()) {
+			try {
+				configDir.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		SpawnBiomeList.INSTANCE.post();
+
+		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		bus.addListener(this::commonSetup);
 	}
+
+	public void commonSetup(FMLCommonSetupEvent event) {
+		SpawnConfigJson.INSTANCE.initFile();
+		SpawnConfigJson.INSTANCE.loadFiles();
+		MinecraftForge.EVENT_BUS.addListener(EntitySpawnEventDC::onSpawn);
+	}
+
 }

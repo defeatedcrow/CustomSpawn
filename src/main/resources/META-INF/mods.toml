@@ -1,28 +1,35 @@
-
 modLoader="javafml"
-loaderVersion="[31,)"
-issueTrackerURL="https://github.com/defeatedcrow/CustomSpawn/issue"
-
+loaderVersion="[41,)"
+license="All rights reserved, Please see homepage."
+issueTrackerURL="https://github.com/defeatedcrow/CustomSpawn/issues"
 [[mods]]
-modId="dcs_spawn"
-version="B3.0.0"
-displayName="DCsCustomSpawnMod"
-displayURL="https://defeatedcrow.jp/modwiki/CustomSpawn/"
-logoFile="harvest_with_dispenser_200.png"
-credits="defeatedcrow"
+modId="dcs_custom_spawn"
+version="${file.jarVersion}"
+displayName="CustomSpawn"
+updateJSONURL=""
+displayURL="https://github.com/defeatedcrow/CustomSpawn"
+logoFile=""
 authors="defeatedcrow"
-description=""
 
-[[dependencies.dcs_spawn]]
+description='''
+A mod for customizing mob spawning.
+The following spawn bans can be set in the config file:
+- Specific altitude
+- From the spawner
+- Near the village
+- Biome Tags
+- Block Tags
+'''
+
+[[dependencies.dcs_custom_spawn]]
     modId="forge"
     mandatory=true
-    versionRange="[31,)"
+    versionRange="[41,)"
     ordering="NONE"
     side="SERVER"
-
-[[dependencies.dcs_spawn]]
+[[dependencies.dcs_custom_spawn]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2]"
+    versionRange="[1.19,1.20)"
     ordering="NONE"
     side="SERVER"

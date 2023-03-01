@@ -1,57 +1,80 @@
-﻿#### DCsCustomSpawnMod B3.0.0 for Minecraft 1.15.2 ####
+﻿#### DCsCustomSpawnMod R4.0.0 for Minecraft 1.19.2 ####
 
-# 前提Ver&Mod
+# 導入環境 / Required Environment
 
-・Minecraft1.15.2
-・MincraftForge 1.15.2_31.1.0+
+・Minecraft1.19.2
+・MincraftForge 1.19.2_43.1.1+
 
-# 使用方法
+# 使用方法 / Installation
 
 ・MincraftForgeの導入後に作成されるmodsフォルダの中に、DLしたファイルを.jarファイルのまま置いてください。
-・サーバーサイドのみの導入で動作します。
+　After installing MincraftForge, put the downloaded jar file into the generated mods folder.
+・サーバーサイドのみの導入で動作します。(多分)
+　Probably it works only on the server side.
 
 
-# 配布DL先
+# 配布DL先 / Published links
  Wiki：https://defeatedcrow.jp/modwiki/CustomSpawn
 
 
-# 概要
-　Mob(EntityLiving)のスポーンを制するmodです。
+# 概要 / Summery
+　Mob(LivingEntity)の自然スポーンを制限するmodです。
+　This mod restricts the natural spawning of mobs (LivingEntity).
+
+# 使い方 / Use
+
+ 導入するとコンフィグフォルダ内に"custom_spawn"フォルダと、コンフィグファイルの作成例が生成されます。
+ 制限したいmobごとに、設定ファイルを作成してcustom_spawnフォルダに追加してください。
+ When installed, a "custom_spawn" folder and an example configuration file will be generated in the config folder.
+ Create a config file for each mob you want to restrict, and add it to "custom_spawn" folder.
+
+# 設定ファイルの見方 / About config file
+
+EntityTypeName:
+　対象のEntityTypeを指定します。　Specifies the target EntityType.
+ * 指定した文字列を含むEntityが対象となります。（部分一致）
+   Entities that contain the specified string are targeted. (Partial Match)
+ * modidを含めることは出来ません。（":"などの制御文字は使用できません。）
+   modid cannot be included. (Control characters such as ":" are not allowed.)
+
+MaxSpawnAltitude:
+ スポーンを許可する最高高度を指定します。
+ Specifies the maximum altitude allowed to spawn.
+
+MinSpawnAltitude:
+  スポーンを許可する最低高度を指定します。
+ Specifies the minimum altitude allowed to spawn.
+
+DenySpawnInVillage:
+ "true"の場合、村の内部でのスポーンを無効化します。
+ If "true", disables spawning inside villages.
+
+DenySpawnerSpawn:
+ "true"の場合、スポナーブロックによるスポーンを無効化します。
+ If "true", disables spawning from the spawner.
+
+BiomeTagBlacklist:
+ スポーン座標のバイオームが指定した文字列を含むBiomeTagを持つ場合、スポーンを無効化します。
+ Disables spawning if the biome at the spawn coordinates has a BiomeTag containing the given string.
+
+BiomeTagBlacklist:
+ スポーン座標のBlockStateが指定した文字列を含むBlockTagを持つ場合、スポーンを無効化します。
+ Disables spawning if the BlockState at the spawn coordinates has a BlockTag containing the given string.
 
 
-#高度制限(敵性MOBのみ)
-　確実に沸かない範囲、スポーン率50%に制限する範囲をそれぞれ設定できます。
-　デフォルト
-　50~80 いない
-　40~100 確率が下がる
+ ### 更新履歴 / Change log
 
-#ブロック制限(敵性MOBのみ)
-　log、planksの上に敵性モブが沸かなくなります。
-　対象ブロックはコンフィグファイルで変更可能。
-
-#バイオーム制限 (敵性以外のモブも設定可)
-　jsonファイルに追記することで、モブごとにバイオームブロックリストを設定できます。
-　バイオーム名、ForgeのBiomeDictionary名のどちらも使えます。
- "ALL"を指定することですべてのバイオームを対象にできます。
-
-#村の保護
-　村の中心から半径64ブロック以内の敵性モブのスポーンを抑制し、さらに村範囲内に侵入したゾンビをデスポーンさせます。
-
-#スポナーからのスポーンの許可
-　スポナーブロック由来のMobのスポーンを許可できます。
-
- 範囲や機能のON・OFFはコンフィグで調整できます。
-
- ### 更新履歴
+ ○v4.0.0
+  MC1.19.2に対応
 
  ○B3.0.0(beta)
  　MC1.15.2に対応
 
- ○2.1.1
+ ○v2.1.1
  　スポーン条件を再修正
 
- ○2.1.0
+ ○v2.1.0
  　ブロック、バイオームのブラックリストを追加
 
- ○2.0.1
+ ○v2.0.1
  　うまく動作しないためEvent発生条件を修正
