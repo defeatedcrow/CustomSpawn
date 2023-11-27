@@ -1,9 +1,9 @@
-﻿#### DCsCustomSpawnMod R4.0.0 for Minecraft 1.19.2 ####
+﻿#### DCsCustomSpawnMod R4.0.1 for Minecraft 1.19.2 ####
 
 # 導入環境 / Required Environment
 
 ・Minecraft1.19.2
-・MincraftForge 1.19.2_43.1.1+
+・MincraftForge 1.19.2_43.2.0+
 
 # 使用方法 / Installation
 
@@ -64,7 +64,10 @@ BiomeTagBlacklist:
 
  ### 更新履歴 / Change log
 
- ○v4.0.0
+ ○v4.0.1
+  Forge43.2.0に対応
+
+ ○v4.0.1
   MC1.19.2に対応
 
  ○B3.0.0(beta)

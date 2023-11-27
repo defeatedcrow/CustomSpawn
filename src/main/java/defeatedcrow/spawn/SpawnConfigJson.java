@@ -8,8 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-import org.apache.commons.compress.utils.Lists;
-
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
@@ -75,7 +74,7 @@ public class SpawnConfigJson {
 
 	public static void loadFiles() {
 
-		if (CustomSpawnCore.configDir == null)
+		if (CustomSpawnCore.configDir == null || !CustomSpawnCore.configDir.exists())
 			return;
 
 		File[] files = CustomSpawnCore.configDir.listFiles(new JsonFileFilter());
@@ -108,7 +107,13 @@ public class SpawnConfigJson {
 	}
 
 	private static void initRegistry() {
-		INSTANCE.defaultData.add(new SpawnData(EntityType.ZOMBIE, 320, -64, false, false, new String[] { "Set any biome tags" }, new String[] { "Set any block tags" }));
+		INSTANCE.defaultData.add(new SpawnData(EntityType.ZOMBIE, 50, -64, true, false, new String[] { "Set any biome tags. ex. SANDY, FOREST, HOT..." }, new String[] { "Set any block tags" }));
+		INSTANCE.defaultData.add(new SpawnData(EntityType.SKELETON, 50, -64, true, false, new String[] { "Set any biome tags" }, new String[] { "Set any block tags" }));
+		INSTANCE.defaultData.add(new SpawnData(EntityType.CREEPER, 50, -64, true, false, new String[] { "Set any biome tags" }, new String[] { "Set any block tags" }));
+		INSTANCE.defaultData.add(new SpawnData(EntityType.SPIDER, 50, -64, true, false, new String[] { "Set any biome tags" }, new String[] { "Set any block tags" }));
+		INSTANCE.defaultData.add(new SpawnData(EntityType.SLIME, 50, -64, true, false, new String[] { "Set any biome tags" }, new String[] { "Set any block tags" }));
+		INSTANCE.defaultData.add(new SpawnData(EntityType.ENDERMAN, 50, -64, true, false, new String[] { "Set any biome tags" }, new String[] { "Set any block tags" }));
+		INSTANCE.defaultData.add(new SpawnData(EntityType.WITCH, 50, -64, true, false, new String[] { "Set any biome tags" }, new String[] { "Set any block tags" }));
 	}
 
 }
